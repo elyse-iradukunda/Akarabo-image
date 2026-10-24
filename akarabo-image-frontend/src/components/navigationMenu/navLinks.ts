@@ -10,6 +10,7 @@ import {
   DashboardIcon,
   MoneyIcon,
   ReceiptIcon,
+  CalendarIcon,
   UsersIcon,
 } from '../../assets';
 import type { IconProps } from '../../assets/types';
@@ -54,12 +55,16 @@ export const navGroups: NavGroup[] = [
         label: 'Bookings',
         to: '/bookings',
         icon: CameraIcon,
+        roles: ['OWNER', 'MANAGER', 'CASHIER'],
       },
       {
         label: 'Customers',
         to: '/customers',
         icon: UsersIcon,
       },
+      { label: 'My tasks', to: '/reports/studio', icon: CalendarIcon, roles: ['OWNER', 'MANAGER', 'CASHIER', 'PHOTOGRAPHER'] },
+      { label: 'Client services', to: '/client-services', icon: UsersIcon, roles: ['OWNER', 'MANAGER', 'CASHIER'] },
+      { label: 'Assign editing task', to: '/tasks/new', icon: CameraIcon, roles: ['OWNER', 'MANAGER', 'CASHIER'] },
     ],
   },
   {
@@ -69,13 +74,13 @@ export const navGroups: NavGroup[] = [
         label: 'Payments',
         to: '/payments',
         icon: MoneyIcon,
-        roles: ['OWNER', 'MANAGER', 'CASHIER'],
+        roles: ['OWNER', 'MANAGER'],
       },
       {
         label: 'Expenses',
         to: '/expenses',
         icon: ReceiptIcon,
-        roles: ['OWNER', 'MANAGER', 'CASHIER'],
+        roles: ['OWNER', 'MANAGER'],
       },
     ],
   },

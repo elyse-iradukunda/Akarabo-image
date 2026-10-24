@@ -17,7 +17,7 @@ export function NewExpense() {
       <>
         <PageHeader title="Record expense" />
         <StatusMessage tone="warning">
-          Only cashiers, managers and the owner can record expenses.
+          Only managers and the owner can manage expenses.
         </StatusMessage>
       </>
     );
@@ -37,7 +37,7 @@ export function NewExpense() {
         }
       />
 
-      <div className="ak-card">
+      <div className="ak-card ak-finance-form-card">
         <div className="ak-card__body">
           <ExpenseForm
             onSuccess={() => navigate('/expenses')}

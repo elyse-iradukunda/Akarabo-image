@@ -6,28 +6,28 @@
  */
 
 :root {
-  /* Brand */
-  --color-primary: #b3122f;
-  --color-primary-dark: #8e0d24;
-  --color-primary-soft: #fdeaee;
-  --color-accent: #f4a300;
-  --color-accent-soft: #fff5e0;
+  /* Brand — Akarabo green palette (60% neutral, 30% green, 10% accent) */
+  --color-primary: #5ca832;
+  --color-primary-dark: #467d22;
+  --color-primary-soft: #e7f3e4;
+  --color-accent: #32a868;
+  --color-accent-soft: #e5f4ea;
 
   /* Neutrals */
-  --color-bg: #f5f6f8;
+  --color-bg: #f7faf6;
   --color-surface: #ffffff;
-  --color-surface-alt: #fafbfc;
-  --color-border: #e3e6ea;
-  --color-border-strong: #cfd4da;
-  --color-text: #1b1f24;
-  --color-text-muted: #626a75;
-  --color-text-subtle: #8b93a1;
+  --color-surface-alt: #f2f7f1;
+  --color-border: #dde8dd;
+  --color-border-strong: #c3d6c4;
+  --color-text: #1e2b22;
+  --color-text-muted: #50655a;
+  --color-text-subtle: #7c8f80;
   --color-inverse: #ffffff;
 
   /* Sidebar */
-  --color-sidebar-bg: #16191f;
-  --color-sidebar-hover: #22262e;
-  --color-sidebar-text: #a8b0bd;
+  --color-sidebar-bg: #14211a;
+  --color-sidebar-hover: #203327;
+  --color-sidebar-text: #9db3a0;
 
   /* Semantic */
   --color-success: #17845a;
@@ -41,7 +41,7 @@
 
   /* Typography */
   --font-sans:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 

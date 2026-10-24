@@ -21,19 +21,24 @@ export function canManageCustomers(role?: Role | null): boolean {
   return role === 'MANAGER' || role === 'OWNER';
 }
 
+/** Cashiers can register customers; customer edits stay with management. */
+export function canRegisterCustomers(role?: Role | null): boolean {
+  return role === 'CASHIER' || role === 'PHOTOGRAPHER' || canManageCustomers(role);
+}
+
 /** Manager and owner create, edit, confirm, complete or cancel bookings. */
 export function canManageBookings(role?: Role | null): boolean {
   return role === 'MANAGER' || role === 'OWNER';
 }
 
-/** Cashier, manager and owner record money received. */
+/** Only the owner and manager can access financial records and actions. */
 export function canRecordPayments(role?: Role | null): boolean {
-  return role === 'CASHIER' || role === 'MANAGER' || role === 'OWNER';
+  return role === 'MANAGER' || role === 'OWNER';
 }
 
-/** Cashier, manager and owner record studio spending. */
+/** Only the owner and manager can access financial records and actions. */
 export function canRecordExpenses(role?: Role | null): boolean {
-  return role === 'CASHIER' || role === 'MANAGER' || role === 'OWNER';
+  return role === 'MANAGER' || role === 'OWNER';
 }
 
 /** Reversing a financial record is a manager/owner action. */

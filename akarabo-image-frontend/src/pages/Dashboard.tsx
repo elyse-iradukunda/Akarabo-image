@@ -29,6 +29,10 @@ import {
 import { formatMoney } from '../util/formatters';
 import { todayIso } from '../util/formatters';
 import { canManageBookings, canRecordPayments } from '../util/permissions';
+import { useQuery } from '@tanstack/react-query';
+import { axiosInstance } from '../util/axiosInstance';
+
+type TodayStudioReport = { clients: Array<{ id: string; customerName: string; phoneNumber: string; paidAmount: number; remainingAmount: number; serviceStatus: string }>; photographerTotals: Array<{ photographerUserId: string; photographerName: string; photosEdited: number }> };
 
 /** Landing screen: the studio at a glance. */
 export function Dashboard() {
@@ -39,6 +43,12 @@ export function Dashboard() {
   const customers = useCustomers({ limit: 100 });
   const payments = usePayments({ limit: 100 }, { enabled: canSeeMoney });
   const expenses = useExpenses({ limit: 100 }, { enabled: canSeeMoney });
+  const studioReport = useQuery({
+    queryKey: ['studio-reports', todayIso(), todayIso()],
+    queryFn: async () => (await axiosInstance.get<TodayStudioReport>('/studio-reports', { params: { from: todayIso(), to: todayIso() } })).data,
+    enabled: ['OWNER', 'MANAGER', 'CASHIER'].includes(user?.role ?? ''),
+    refetchInterval: 15000,
+  });
 
   const stats = useMemo(() => {
     const allBookings = bookings.data?.data ?? [];
@@ -146,6 +156,19 @@ export function Dashboard() {
           </>
         )}
       </div>
+
+      {studioReport.data && (
+        <section className="ak-card ak-mb-6" aria-live="polite">
+          <div className="ak-card__header">
+            <h2 className="ak-card__title">Today’s client activity</h2>
+            <Link to="/reports/studio" className="ak-small ak-strong">Open daily report</Link>
+          </div>
+          <div className="ak-card__body">
+            <p className="ak-small ak-subtle ak-mb-3">{studioReport.data.clients.length} client visits · {studioReport.data.photographerTotals.reduce((sum, entry) => sum + entry.photosEdited, 0)} photos edited</p>
+            {studioReport.data.clients.length > 0 && <div className="ak-table-wrap"><table className="ak-table"><thead><tr><th>Customer</th><th>Phone</th><th>Paid</th><th>Remaining</th><th>Service</th></tr></thead><tbody>{studioReport.data.clients.slice(0, 5).map((client) => <tr key={client.id}><td className="ak-strong">{client.customerName}</td><td>{client.phoneNumber}</td><td>{formatMoney(client.paidAmount, 'RWF')}</td><td>{formatMoney(client.remainingAmount, 'RWF')}</td><td>{client.serviceStatus === 'SERVED' ? 'Served' : 'In progress'}</td></tr>)}</tbody></table></div>}
+          </div>
+        </section>
+      )}
 
       <div className="ak-card">
         <div className="ak-card__header">

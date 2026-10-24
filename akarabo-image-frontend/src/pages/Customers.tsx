@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { PlusIcon, SearchIcon } from '../assets';
 import { Badge } from '../components/Badge';
@@ -20,13 +21,23 @@ import {
   customerStatusTone,
   toCustomerView,
 } from '../mappers/customerMapper';
-import { canManageCustomers } from '../util/permissions';
+import { canRegisterCustomers } from '../util/permissions';
 import { formatDate } from '../util/formatters';
 import type { Customer } from '../types/customer';
+import { axiosInstance } from '../util/axiosInstance';
+
+type UnfinishedClient = { id: string; customerId: string; customerName: string; phoneNumber: string; serviceDate: string; photosTaken: number };
 
 /** Customer directory with search, status filter and pagination. */
 export function Customers() {
   const { user } = useAuth();
+  const isPhotographer = user?.role === 'PHOTOGRAPHER';
+  const unfinishedClients = useQuery({
+    queryKey: ['studio-services', 'unfinished'],
+    queryFn: async () => (await axiosInstance.get<UnfinishedClient[]>('/studio-services/unfinished')).data,
+    enabled: isPhotographer,
+    refetchInterval: 15_000,
+  });
   const [search, setSearch] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [isActive, setIsActive] = useState<'' | 'true' | 'false'>('');
@@ -43,7 +54,7 @@ export function Customers() {
     [pagination.page, pagination.limit, searchTerm, isActive],
   );
 
-  const customers = useCustomers(query);
+  const customers = useCustomers(query, !isPhotographer);
 
   const controls = usePaginationControls({
     page: pagination.page,
@@ -53,13 +64,23 @@ export function Customers() {
 
   const rows: Customer[] = customers.data?.data ?? [];
 
+  if (isPhotographer) {
+    return <>
+      <PageHeader title="Clients in progress" subtitle="Only clients whose studio service is not complete." actions={<Link to="/customers/new" className="ak-button ak-button--primary"><PlusIcon size={18} />New client</Link>} />
+      <div className="ak-card">
+        {unfinishedClients.error && <div className="ak-card__body"><ErrorMessage error={unfinishedClients.error} onRetry={() => void unfinishedClients.refetch()} /></div>}
+        {unfinishedClients.isLoading ? <LoadingBlock message="Loading clients in progress…" /> : <div className="ak-table-wrap"><table className="ak-table"><thead><tr><th>Client</th><th>Phone</th><th>Service date</th><th>Photos taken</th><th>Status</th></tr></thead><tbody>{(unfinishedClients.data ?? []).map((client) => <tr key={client.id}><td className="ak-strong">{client.customerName}</td><td>{client.phoneNumber}</td><td>{client.serviceDate}</td><td>{client.photosTaken}</td><td><Badge tone="warning">In progress</Badge></td></tr>)}</tbody></table>{!unfinishedClients.data?.length && <p className="ak-card__body ak-subtle">There are no unfinished client services.</p>}</div>}
+      </div>
+    </>;
+  }
+
   return (
     <>
       <PageHeader
         title="Customers"
         subtitle="People and companies the studio books work for."
         actions={
-          canManageCustomers(user?.role) && (
+          canRegisterCustomers(user?.role) && (
             <Link to="/customers/new" className="ak-button ak-button--primary">
               <PlusIcon size={18} />
               New customer
@@ -128,7 +149,7 @@ export function Customers() {
                     : 'Register the first customer to start booking work.'
                 }
                 action={
-                  canManageCustomers(user?.role) && (
+                  canRegisterCustomers(user?.role) && (
                     <Link
                       to="/customers/new"
                       className="ak-button ak-button--primary"

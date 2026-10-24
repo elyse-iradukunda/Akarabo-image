@@ -8,19 +8,10 @@ import {
   BOOKING_SERVICE_TYPES,
   type BookingServiceType,
 } from '../types/booking';
-import {
-  BOOKING_STATUSES,
-  type BookingStatus,
-} from '../types/booking';
-import {
-  EXPENSE_CATEGORIES,
-  type ExpenseCategory,
-} from '../types/expense';
+import { BOOKING_STATUSES, type BookingStatus } from '../types/booking';
+import { EXPENSE_CATEGORIES, type ExpenseCategory } from '../types/expense';
 import { EXPENSE_STATUSES, type ExpenseStatus } from '../types/expense';
-import {
-  PAYMENT_METHODS,
-  type PaymentMethod,
-} from '../types/payment';
+import { PAYMENT_METHODS, type PaymentMethod } from '../types/payment';
 import { PAYMENT_STATUSES, type PaymentStatus } from '../types/payment';
 import { ROLES, type Role } from '../types/auth';
 import type { SelectOption } from '../types/form';
@@ -36,28 +27,24 @@ function toOptions<T extends string>(values: T[]): SelectOption<T>[] {
   return values.map((value) => ({ value, label: label(value) }));
 }
 
-export const serviceTypeOptions: SelectOption<BookingServiceType>[] =
-  toOptions(BOOKING_SERVICE_TYPES);
-
-export const bookingStatusOptions: SelectOption<BookingStatus>[] = toOptions(
-  BOOKING_STATUSES,
+export const serviceTypeOptions: SelectOption<BookingServiceType>[] = toOptions(
+  BOOKING_SERVICE_TYPES,
 );
 
-export const paymentMethodOptions: SelectOption<PaymentMethod>[] = toOptions(
-  PAYMENT_METHODS,
-);
+export const bookingStatusOptions: SelectOption<BookingStatus>[] =
+  toOptions(BOOKING_STATUSES);
 
-export const paymentStatusOptions: SelectOption<PaymentStatus>[] = toOptions(
-  PAYMENT_STATUSES,
-);
+export const paymentMethodOptions: SelectOption<PaymentMethod>[] =
+  toOptions(PAYMENT_METHODS);
 
-export const expenseCategoryOptions: SelectOption<ExpenseCategory>[] = toOptions(
-  EXPENSE_CATEGORIES,
-);
+export const paymentStatusOptions: SelectOption<PaymentStatus>[] =
+  toOptions(PAYMENT_STATUSES);
 
-export const expenseStatusOptions: SelectOption<ExpenseStatus>[] = toOptions(
-  EXPENSE_STATUSES,
-);
+export const expenseCategoryOptions: SelectOption<ExpenseCategory>[] =
+  toOptions(EXPENSE_CATEGORIES);
+
+export const expenseStatusOptions: SelectOption<ExpenseStatus>[] =
+  toOptions(EXPENSE_STATUSES);
 
 export const roleOptions: SelectOption<Role>[] = toOptions(ROLES);
 

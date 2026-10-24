@@ -107,7 +107,7 @@ export function BookingForm({
   const failure = createBooking.error ?? updateBooking.error;
 
   return (
-    <form className="ak-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className="ak-form ak-form--compact" onSubmit={handleSubmit(onSubmit)} noValidate>
       {failure && (
         <div className="ak-mb-3">
           <ErrorMessage message={errorMessage(failure)} />
@@ -223,7 +223,11 @@ export function BookingForm({
 
       <div className="ak-form__actions">
         {onCancel && (
-          <Button variant="secondary" onClick={onCancel} disabled={isSubmitting}>
+          <Button
+            variant="secondary"
+            onClick={onCancel}
+            disabled={isSubmitting}
+          >
             Cancel
           </Button>
         )}

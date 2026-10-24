@@ -18,10 +18,12 @@ import { queryKeys } from './queryKeys';
 /** Paginated customers matching the given filters. */
 export function useCustomers(
   query: CustomerQuery = {},
+  enabled = true,
 ): UseQueryResult<Paginated<Customer>> {
   return useQuery({
     queryKey: queryKeys.customers.list(query),
     queryFn: () => customerService.list(query),
+    enabled,
   });
 }
 

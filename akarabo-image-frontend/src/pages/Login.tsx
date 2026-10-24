@@ -1,4 +1,4 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Logo } from '../assets';
 import { LoginForm } from '../forms/LoginForm';
@@ -8,14 +8,12 @@ interface LocationState {
   from?: string;
 }
 
-/** Sign-in screen — the only page reachable without a session. */
 export function Login() {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as LocationState | null;
 
-  // Already signed in? Go straight to the intended page.
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
       navigate(state?.from ?? '/dashboard', { replace: true });
@@ -27,31 +25,14 @@ export function Login() {
   }
 
   return (
-    <div className="ak-auth">
-      <div className="ak-auth__card">
-        <div className="ak-auth__brand">
-          <Logo size={52} color="#b3122f" />
-          <h1 className="ak-auth__title">Akarabo Image</h1>
-          <p className="ak-auth__subtitle">
-            Studio management for bookings, customers and finances.
-          </p>
-        </div>
-
-        <LoginForm />
-
-        <div className="ak-auth__hint">
-          <p>
-            <strong>Demo account</strong>
-          </p>
-          <p className="ak-mt-2 ak-mono">owner@akarabo.rw</p>
-          <p className="ak-mono">ChangeMe123!</p>
-        </div>
-
-        <p className="ak-auth__footer">
-          Akarabo Image · Studio Manager
-        </p>
-      </div>
-    </div>
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4 text-gray-800 sm:p-6">
+      <section className="w-full max-w-xs rounded-2xl bg-white p-6 shadow-xl shadow-gray-200/70 sm:p-8">
+            <Link to="/" className="mb-7 inline-flex items-center gap-2.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"><Logo size={30} color="#5ca832" /><span className="text-sm font-semibold tracking-tight text-gray-900">Akarabo Image</span></Link>
+            <h1 className="text-xl font-semibold tracking-tight text-gray-900">Welcome Back</h1>
+            <p className="mt-1 text-xs text-gray-500">Please login to your account</p>
+            <LoginForm />
+      </section>
+    </main>
   );
 }
 

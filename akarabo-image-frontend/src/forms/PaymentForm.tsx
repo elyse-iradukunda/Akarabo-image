@@ -72,7 +72,7 @@ export function PaymentForm({
   const failure = createPayment.error ?? serverError;
 
   return (
-    <form className="ak-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className="ak-form ak-form--compact ak-form--finance" onSubmit={handleSubmit(onSubmit)} noValidate>
       {failure && (
         <div className="ak-mb-3">
           <ErrorMessage message={errorMessage(failure)} />

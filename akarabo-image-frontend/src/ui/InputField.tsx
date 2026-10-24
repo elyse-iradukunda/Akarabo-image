@@ -1,56 +1,45 @@
-import { forwardRef, type InputHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
 
-export interface InputFieldProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  /** Visible label above the control. */
+export interface InputFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
-  /** Marks the field as mandatory (adds the asterisk). */
   required?: boolean;
-  /** Helper text rendered below the control. */
   hint?: string;
-  /** Validation message — also switches the control to the error style. */
   error?: string;
+  trailingAction?: ReactNode;
 }
 
-/** Labelled text input used by every form in the app. */
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
-  function InputField(
-    { label, required, hint, error, id, className, ...props },
-    ref,
-  ) {
+  function InputField({ label, required, hint, error, id, className, trailingAction, ...props }, ref) {
     const fieldId = id ?? props.name;
     const describedBy = error ? `${fieldId}-error` : hint ? `${fieldId}-hint` : undefined;
 
     return (
-      <div className="ak-field">
+      <div className="flex min-w-0 flex-col gap-1.5">
         {label && (
-          <label className="ak-field__label" htmlFor={fieldId}>
+          <label className="text-xs font-medium text-gray-700" htmlFor={fieldId}>
             {label}
-            {required && <span className="ak-field__required">*</span>}
+            {required && <span className="ml-0.5 text-brand">*</span>}
           </label>
         )}
-        <input
-          id={fieldId}
-          ref={ref}
-          aria-invalid={Boolean(error)}
-          aria-describedby={describedBy}
-          className={[
-            'ak-input',
-            error ? 'ak-input--error' : '',
-            className ?? '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
-          {...props}
-        />
+        <div className="relative">
+          <input
+            id={fieldId}
+            ref={ref}
+            aria-invalid={Boolean(error)}
+            aria-describedby={describedBy}
+            className={[
+              'w-full rounded-md border border-transparent bg-gray-100 px-3 py-2 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-brand focus:bg-white focus:ring-2 focus:ring-brand/15 disabled:cursor-not-allowed disabled:opacity-60',
+              error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/15' : '',
+              className ?? '',
+            ].filter(Boolean).join(' ')}
+            {...props}
+          />
+          {trailingAction}
+        </div>
         {error ? (
-          <span className="ak-field__error" id={`${fieldId}-error`}>
-            {error}
-          </span>
+          <span className="text-xs text-red-600" id={`${fieldId}-error`} role="alert">{error}</span>
         ) : hint ? (
-          <span className="ak-field__hint" id={`${fieldId}-hint`}>
-            {hint}
-          </span>
+          <span className="text-xs text-gray-500" id={`${fieldId}-hint`}>{hint}</span>
         ) : null}
       </div>
     );

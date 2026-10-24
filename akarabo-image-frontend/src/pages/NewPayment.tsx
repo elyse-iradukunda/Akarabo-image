@@ -20,7 +20,7 @@ export function NewPayment() {
       <>
         <PageHeader title="Record payment" />
         <StatusMessage tone="warning">
-          Only cashiers, managers and the owner can record payments.
+          Only managers and the owner can manage payments.
         </StatusMessage>
       </>
     );
@@ -44,7 +44,7 @@ export function NewPayment() {
         }
       />
 
-      <div className="ak-card">
+      <div className="ak-card ak-finance-form-card">
         <div className="ak-card__body">
           <PaymentForm
             bookings={bookings.data?.data ?? []}

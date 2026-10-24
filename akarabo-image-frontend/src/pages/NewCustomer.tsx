@@ -4,7 +4,7 @@ import { Button } from '../components/Button';
 import { PageHeader } from '../components/PageHeader';
 import { CustomerForm } from '../forms/CustomerForm';
 import { useAuth } from '../context/AuthContext';
-import { canManageCustomers } from '../util/permissions';
+import { canRegisterCustomers } from '../util/permissions';
 import { StatusMessage } from '../components/StatusMessage';
 
 /** Screen that registers a new customer. */
@@ -12,12 +12,12 @@ export function NewCustomer() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  if (!canManageCustomers(user?.role)) {
+  if (!canRegisterCustomers(user?.role)) {
     return (
       <>
         <PageHeader title="New customer" />
         <StatusMessage tone="warning">
-          Only managers and the owner can register customers.
+          Photographers, cashiers, managers, and the owner can register customers.
         </StatusMessage>
       </>
     );
@@ -40,7 +40,7 @@ export function NewCustomer() {
       <div className="ak-card">
         <div className="ak-card__body">
           <CustomerForm
-            onSuccess={(customer) => navigate(`/customers/${customer.id}`)}
+            onSuccess={(customer) => navigate(user?.role === 'PHOTOGRAPHER' ? '/customers' : `/customers/${customer.id}`)}
             onCancel={() => navigate('/customers')}
           />
         </div>

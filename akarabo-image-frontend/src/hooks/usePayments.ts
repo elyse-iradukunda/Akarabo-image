@@ -43,6 +43,7 @@ export function useCreatePayment() {
       paymentService.create(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
+      queryClient.invalidateQueries({ queryKey: ['studio-reports'] });
     },
   });
 }

@@ -21,6 +21,7 @@ export const PAYMENT_STATUSES: PaymentStatus[] = ['COMPLETED', 'REVERSED'];
 export interface Payment {
   id: string;
   bookingId?: string;
+  studioServiceId?: string;
   amount: number;
   currency: string;
   method: PaymentMethod;
@@ -38,6 +39,7 @@ export interface Payment {
 
 export interface CreatePaymentPayload {
   bookingId?: string;
+  studioServiceId?: string;
   amount: number;
   currency?: string;
   method: PaymentMethod;

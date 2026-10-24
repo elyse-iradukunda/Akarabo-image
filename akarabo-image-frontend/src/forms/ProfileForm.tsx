@@ -74,7 +74,7 @@ export function ProfileForm({ account, onSuccess }: ProfileFormProps) {
   const failure = updateUser.error ?? serverError;
 
   return (
-    <form className="ak-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className="ak-form ak-form--compact" onSubmit={handleSubmit(onSubmit)} noValidate>
       {failure && (
         <div className="ak-mb-3">
           <ErrorMessage message={errorMessage(failure)} />

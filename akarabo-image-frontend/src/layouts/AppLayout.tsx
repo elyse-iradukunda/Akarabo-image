@@ -12,6 +12,7 @@ export function AppLayout() {
   return (
     <div className="ak-app">
       <NavigationMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {menuOpen && <button type="button" className="ak-sidebar-scrim" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
 
       <div className="ak-main">
         <NavBar onToggleMenu={() => setMenuOpen((open) => !open)} />

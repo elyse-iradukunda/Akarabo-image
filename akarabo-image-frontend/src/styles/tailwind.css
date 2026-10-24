@@ -1,0 +1,11 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "./theme.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --color-brand: #5ca832;
+  --color-brand-dark: #467d22;
+  --color-accent: #32a868;
+}
