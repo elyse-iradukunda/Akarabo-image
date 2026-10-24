@@ -1,0 +1,10 @@
+The live site at akarabostudio.netlify.app showed "Page not found" on every URL, including the landing page. The React frontend itself is fine. The production deploy that is live was published from an older commit, before the build settings pointed at the `akarabo-image-frontend` folder. That deploy has no `index.html` and no app files. The two production builds since then, both using the corrected settings, failed with exit code 2, so the empty deploy stayed live.
+
+Only the frontend was checked; the backend is a separate service on Render. The committed frontend files were copied into a clean folder and built with the exact production command (`npm ci --include=dev && npm run build`), once normally and once with CI environment variables set. Both runs installed dependencies, passed the TypeScript check and produced a working build with no errors. A deploy preview of the same code was published and every route returned the React app: `/`, `/login`, `/dashboard`, `/bookings`, `/customers/:id`, `/staff/:id/edit`, and unknown paths, which show the app's own Not Found page.
+
+A `public/_redirects` file was added to the frontend as a routing safety net. It sends every path to `index.html`, so React Router handles navigation even if the root config is missed.
+
+Two things are still open:
+
+- **Getting the fix live.** The failed production builds could not be reproduced, and their logs were not available, so the cause is unknown. Merging this change into `dev` starts a new production build. If the site still shows the old deploy, open the project's Deploys page and choose "Trigger deploy → Clear cache and deploy site". If it fails again, its build log will show the exact error.
+- **Connecting to the Render backend.** The app currently calls `http://localhost:8000/api/v1`, so login and every data page will fail in the browser even once the pages load. Set the `VITE_API_BASE_URL` environment variable in Netlify to the Render API address, for example `https://<your-service>.onrender.com/api/v1`, then redeploy. The Render backend must also allow CORS requests from `https://akarabostudio.netlify.app`.
